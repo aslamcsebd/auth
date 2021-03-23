@@ -7,13 +7,12 @@
          <div class="card">
             <div class="card-header"> {{ isset($url) ? ucwords($url) : ""}} {{ __('Register') }}</div>
             <div class="card-body">
-               
-               @isset($url)               
+               @isset($url)
                   <form method="POST" action='{{ url("register/$url") }}' aria-label="{{ __('Register') }}">
                @else
                   <form method="POST" action="{{ route('register') }}" aria-label="{{ __('Register') }}">
                @endisset
-                     @csrf
+                  @csrf
                      <div class="form-group row">
                          <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 

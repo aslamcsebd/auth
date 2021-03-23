@@ -5,61 +5,51 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Auth;
 use Illuminate\Http\Request;
+use Auth;
 
-class LoginController extends Controller
-{
+class LoginController extends Controller {
 
-    use AuthenticatesUsers;
+   use AuthenticatesUsers;
+   protected $redirectTo = RouteServiceProvider::HOME;
 
-    protected $redirectTo = RouteServiceProvider::HOME;
-
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-        $this->middleware('guest:admin')->except('logout');
-        $this->middleware('guest:student')->except('logout');
-    }
-
-    public function showAdminLoginForm(){
-        return view('auth.login', ['url' => 'admin']);
-    }
-
-   public function adminLogin(Request $request){
-     $this->validate($request, [
-         'email'   => 'required|email',
-         'password' => 'required|min:6'
-     ]);
-
-     if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-
-         return redirect()->intended('/admin');
-     }
-     return back()->withInput($request->only('email', 'remember'));
+   public function __construct(){
+      $this->middleware('guest')->except('logout');
+      $this->middleware('guest:admin')->except('logout');
+      $this->middleware('guest:writer')->except('logout');
    }
 
-   public function showStudentLoginForm(){
-      return view('auth.login', ['url' => 'student']);
-   }
-
-   public function studentLogin(Request $request){
-
-      $this->validate($request, [
-         'email'   => 'required|email',
-         'password' => 'required|min:6'
-      ]);
-
-      if (Auth::guard('student')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-
-         return redirect()->intended('/student');
+   //Admin
+      public function showAdminLoginForm(){
+         return view('auth.login', ['url' => 'admin']);
       }
-      return back()->withInput($request->only('email', 'remember'));
-   }
 
+      public function adminLogin(Request $request){
+         $this->validate($request, [
+            'email'   => 'required|email',
+            'password' => 'required|min:6'
+         ]);
 
+         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))){
+            return redirect()->intended('/admin');
+         }
+         return back()->withInput($request->only('email', 'remember'));
+      }
 
+   //Writer
+      public function showWriterLoginForm(){
+        return view('auth.login', ['url' => 'writer']);
+      }
 
+      public function writerLogin(Request $request){
+         $this->validate($request, [
+            'email'   => 'required|email',
+            'password' => 'required|min:6'
+         ]);
 
-
+         if (Auth::guard('writer')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+            return redirect()->intended('/writer');
+         }
+         return back()->withInput($request->only('email', 'remember'));
+      }
 }
