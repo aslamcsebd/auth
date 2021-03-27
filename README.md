@@ -281,8 +281,7 @@
    </details>
 
    <details>
-      <summary>login.blade.php</summary>
-      <pre>
+      <summary>login.blade.php</summary>      
          // resources/views/auth/login.blade.php
          [...]
          <div class="container">
@@ -299,8 +298,7 @@
                                @csrf
 
            [...]
-         </div>
-      </pre>
+         </div>      
    </details>
 
 6) Create the pages authenticated users will access
